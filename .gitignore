@@ -1,0 +1,4 @@
+*.csv
+*.DS_Store
+gpqa-dataset/**/*.csv
+mmlu-dataset/**/*.csv
