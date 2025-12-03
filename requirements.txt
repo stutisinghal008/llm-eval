@@ -1,9 +1,0 @@
-torch>=2.1
-transformers>=4.40
-datasets>=3.0
-pandas
-matplotlib
-seaborn
-huggingface_hub
-openai
-python-dotenv
