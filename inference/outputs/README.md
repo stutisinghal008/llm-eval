@@ -1,1 +1,1 @@
-## PUT 6 FOLDERS - 1 PER MODEL - INSIDE MODEL FOLDER, PUT 2 SUBFODLERS, 1 PER DATASET
+## Don't make folders. Just put CSV in this dir.
