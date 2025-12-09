@@ -1,1 +1,0 @@
-## Don't make folders. Just put CSV in this dir.
