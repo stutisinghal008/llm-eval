@@ -19,14 +19,14 @@ Modern LLMs still hallucinate, especially under pressure to answer everything. S
 Each model receives the instruction:
 “Answer only if you are more than t confident. Mistakes incur t/(1−t) points; correct = +1; IDK = 0.”
 This enforces calibrated answering without modifying model weights.
-Model-Agnostic Confidence via Self-Consistency
+2. Model-Agnostic Confidence via Self-Consistency
 For each question, we run multiple independent generations (typically 6–20) and compute confidence as the vote fraction of the majority answer.
 This works uniformly for API models and open-weight models.
-Thresholded Answering
+3. Thresholded Answering
 A model answers only when p > t. Otherwise it abstains.
 We evaluate at four thresholds:
 t ∈ {0.25, 0.50, 0.75, 0.90}
-Confidence-Proportional Scoring
+4. Confidence-Proportional Scoring
 If p > t, answers are scored as:
 • +1 for correct
 • − p·t / (1−t) for incorrect
