@@ -1,6 +1,4 @@
 ## Evaluation
-This directory contains the code we use to score model outputs under our confidence-aware framework. Although MMLU and GPQA each have their own evaluation notebook, both datasets use the exact same evaluation logic. The functions included here implement the full scoring rule—thresholded answering, penalty-adjusted score, coverage, accuracy, and overconfidence—so the notebooks only need to load model outputs and apply these metrics.
-The evaluation notebooks compute how well the model actually performs at each threshold, identify the best-performing threshold, and compare that value against two baselines (binary grading and always-abstain). This allows us to replicate the analysis across models and datasets in a consistent and reproducible way.
 
 ## What the Evaluation Code Does
 The evaluation code formalizes our entire scoring pipeline. Each model’s output file contains a row per question with the model’s predicted answer and its estimated confidence (from self-consistency vote fractions). For a given threshold t, the model is considered to have “answered” a question only if its confidence exceeds t. Everything else counts as an abstention.

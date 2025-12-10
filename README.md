@@ -3,11 +3,25 @@ Veer Kejriwal · Stuti Singhal · Raima Nawal · Shubhangi Asthana
 
 Georgia Institute of Technology
 
-### Abstract
-Large language models (LLMs) often produce confident but incorrect answers, yet mainstream benchmarks such as MMLU and GPQA score models using binary accuracy, treating confident mistakes and abstentions identically. This masks calibration failures, rewards guessing, and distorts model comparisons. We introduce our own confidence-aware scoring framework that applies directly to existing benchmarks without modifying model weights or requiring new datasets. Models are prompted to answer only when their confidence exceeds a threshold t, and incorrect answers above this threshold incur a penalty proportional to both t and the model’s estimated confidence. Using self-consistency vote fractions as a model-agnostic confidence signal, we evaluate six models across multiple thresholds. Our results show that thresholding does not make models more selective; overconfidence remains widespread, especially on GPQA, and penalty-adjusted scores sharply separate calibrated models from those that answer aggressively. The framework exposes reliability gaps that binary accuracy conceals and provides a more informative basis for assessing trustworthiness in reasoning tasks.
 
 ### Overview
 This repository contains our full pipeline for evaluating large language models under confidence-aware scoring. Instead of relying on binary accuracy which gives equal credit to confident mistakes and genuine uncertainty, we evaluate models only when they self-report confidence above a threshold t, and penalize them proportionally when confidently wrong. This approach reveals reliability failures, calibration gaps, and misleading leaderboard rankings that binary grading masks.
+
+Directory structure:
+
+```text
+llm-eval/
+├─ assets/                 # Figures used in the paper
+├─ data/                   # Processed benchmark splits (MMLU, GPQA)
+├─ inference/
+│  ├─ code/                # Notebooks for running model inference
+│  └─ outputs/             # Raw model answer output
+├─ eval/
+│  ├─ outputs/             # Scored metrics for each model/dataset
+│  └─ *.ipynb              # Notebooks for confidence-aware evaluation
+├─ data_visualization.ipynb# Plots and summary visualizations
+└─ README.md
+```
 
 ### Motivation
 Modern LLMs still hallucinate, especially under pressure to answer everything. Standard benchmarks such as MMLU and GPQA grade each question as correct/incorrect with no penalty, which rewards guessing and inflates performance. Our goal is to introduce a lightweight, dataset agnostic scoring rule that rewards calibrated abstention and exposes overconfident errors directly on existing benchmarks.
@@ -59,30 +73,3 @@ Each model–threshold pair reports:
 3. Penalty-Adjusted Mean Score – overall performance
 4. Overconfidence Rate – incorrect answers with p > t
 These metrics expose how often models answer with unjustified confidence, not just how often they are correct.
-
-### Key Findings
-Our confidence-aware evaluation reveals several patterns that do not appear under standard accuracy grading.
-
-
-1. Thresholding does not make models more selective
-
-Increasing the confidence threshold t does not meaningfully change accuracy, and most models continue answering even when uncertain. This shows that models rarely recognize uncertainty under self-consistency sampling.
-
-2. Penalty Mean exposes calibration failures that raw accuracy hides
-
-Although accuracy changes only slightly across thresholds, penalty-adjusted scores sharply separate calibrated models from overconfident ones. Several models on GPQA accumulate large negative penalties because they answer confidently and incorrectly.
-
-3. Coverage differences reveal whether a model knows when not to answer
-
-Under confidence-aware scoring, stronger models reduce coverage more selectively. GPT on MMLU answers fewer questions at high t and avoids penalties, while many models on GPQA maintain almost full coverage regardless of difficulty.
-
-4. Calibration depends strongly on the dataset
-
-A model that behaves sensibly on MMLU may still show strong overconfidence on GPQA. This demonstrates that calibration does not transfer consistently across datasets and that reliability must be evaluated task by task.
-
-Overall, these findings show that correctness alone is insufficient for understanding model behavior. Confidence-aware evaluation reveals reliability gaps that remain invisible under standard accuracy metrics.
-
-### Conclusion
-This project demonstrates that adding a simple confidence requirement on top of standard benchmarks provides a clearer picture of model reliability. By evaluating both correctness and confidence, we expose behaviors that raw accuracy overlooks, including overconfidence, poor selectivity, and inconsistent calibration across datasets.
-Across six models and two benchmarks, we find that higher confidence thresholds do not automatically produce more careful answering. Many models continue to answer aggressively, accumulating large penalties for confidently wrong outputs. At the same time, well-calibrated models benefit from answering selectively, showing improved penalty-adjusted performance even when accuracy remains similar.
-Taken together, these results suggest that future evaluations should treat confidence and abstention as essential components of model assessment rather than optional diagnostics. Confidence-aware scoring moves model evaluation closer to the expectations placed on models in real-world decision-making settings, where knowing when not to answer is as important as answering correctly.
