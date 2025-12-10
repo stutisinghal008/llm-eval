@@ -12,7 +12,9 @@ This repository contains our full pipeline for evaluating large language models 
 Modern LLMs still hallucinate, especially under pressure to answer everything. Standard benchmarks such as MMLU and GPQA grade each question as correct/incorrect with no penalty, which rewards guessing and inflates performance. Our goal is to introduce a lightweight, dataset agnostic scoring rule that rewards calibrated abstention and exposes overconfident errors directly on existing benchmarks.
 
 ### Methodology
-![Figure 1: Confidence-Aware Pipeline](assets/fig_1.png)
+
+  <img src="assets/fig_1.png" width="300" alt="Confidence-Aware Pipeline">
+
 1. Confidence-Aware Prompting
 Each model receives an instruction:
 “Answer only if you are more than t confident. Mistakes incur t/(1−t) points; correct = +1; IDK = 0.”
