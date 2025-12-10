@@ -60,15 +60,28 @@ Each model–threshold pair reports:
 These metrics expose how often models answer with unjustified confidence, not just how often they are correct.
 
 ### Key Findings
-Thresholding does not make models more selective.
-Most continue answering nearly everything even at t = 0.90.
-Overconfidence is pervasive.
-Many models show >80% overconfidence on GPQA across all thresholds.
-Penalty Mean separates calibrated vs. overconfident models.
-Binary accuracy hides this gap entirely.
-Calibration is dataset-dependent.
-GPT behaves sensibly on MMLU at high t but remains overconfident on GPQA.
+Our confidence-aware evaluation reveals several patterns that do not appear under standard accuracy grading.
 
-### Reproducibility
-All model outputs for MMLU and GPQA are stored in outputs/week7/ and can be re-generated using the included scripts.
-The templates used across models ensure one-to-one comparability.
+
+1. Thresholding does not make models more selective
+
+Increasing the confidence threshold t does not meaningfully change accuracy, and most models continue answering even when uncertain. This shows that models rarely recognize uncertainty under self-consistency sampling.
+
+2. Penalty Mean exposes calibration failures that raw accuracy hides
+
+Although accuracy changes only slightly across thresholds, penalty-adjusted scores sharply separate calibrated models from overconfident ones. Several models on GPQA accumulate large negative penalties because they answer confidently and incorrectly.
+
+3. Coverage differences reveal whether a model knows when not to answer
+
+Under confidence-aware scoring, stronger models reduce coverage more selectively. GPT on MMLU answers fewer questions at high t and avoids penalties, while many models on GPQA maintain almost full coverage regardless of difficulty.
+
+4. Calibration depends strongly on the dataset
+
+A model that behaves sensibly on MMLU may still show strong overconfidence on GPQA. This demonstrates that calibration does not transfer consistently across datasets and that reliability must be evaluated task by task.
+
+Overall, these findings show that correctness alone is insufficient for understanding model behavior. Confidence-aware evaluation reveals reliability gaps that remain invisible under standard accuracy metrics.
+
+### Conclusion
+This project demonstrates that adding a simple confidence requirement on top of standard benchmarks provides a clearer picture of model reliability. By evaluating both correctness and confidence, we expose behaviors that raw accuracy overlooks, including overconfidence, poor selectivity, and inconsistent calibration across datasets.
+Across six models and two benchmarks, we find that higher confidence thresholds do not automatically produce more careful answering. Many models continue to answer aggressively, accumulating large penalties for confidently wrong outputs. At the same time, well-calibrated models benefit from answering selectively, showing improved penalty-adjusted performance even when accuracy remains similar.
+Taken together, these results suggest that future evaluations should treat confidence and abstention as essential components of model assessment rather than optional diagnostics. Confidence-aware scoring moves model evaluation closer to the expectations placed on models in real-world decision-making settings, where knowing when not to answer is as important as answering correctly.
