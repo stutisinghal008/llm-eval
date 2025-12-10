@@ -19,13 +19,3 @@ Some models are loaded locally. Qwen and Llama are downloaded and run on device 
 
 ### Output
 Each model produces a CSV file containing predictions for all thresholds. These files are used by the analysis scripts to compute accuracy, coverage, penalty adjusted scores, and calibration results.
-
-
-Instructions on how to set up the environment: 
-
-1. conda create -n llm-eval python=3.10 -y
-2. conda activate llm-eval
-3. pip install -r requirements.txt
-
-After installation, verify everything works:
-- python -c "import torch, transformers, datasets; print('Environment ready')"
