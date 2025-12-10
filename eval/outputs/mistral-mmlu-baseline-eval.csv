@@ -1,0 +1,4 @@
+,accuracy_at_t,coverage,penalty_mean,overconf_rate
+Confidence-aware (t*=0.25),8.99,98.12,-24.44,89.0
+Binary grading,8.74,1.0,,91.26
+Always abstain,0.0,0.0,0.0,0.0
